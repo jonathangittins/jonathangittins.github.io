@@ -53,7 +53,7 @@ class FormLoader
                 .form-animation .fm-an-box 
                 {
                     max-width: 560px;
-                    width: 100vw;;
+                    width: 100vw;
                     left: 0;
                     top: 0;
                     z-index: 999999;
@@ -229,7 +229,7 @@ class FormLoader
                     </div>
                     
                     <p class="js-fm-an-small">Almost ready to book....</p>
-                    <p class="js-fm-an-big"  data-type="start">Hi ${this.sanitize(this.find.name)} ðŸ‘‹</p>
+                    <p class="js-fm-an-big"  data-type="start">Hi ${this.sanitize(this.find.name)} 👋</p>
                 </div>
             </div>
         `);
@@ -272,7 +272,7 @@ class FormLoader
                 {
                     return $('.js-fm-an-big[data-type="3"]').attr('data-type', '4').fadeOut('fast', function()
                     {
-                        $(this).text('Stay spicy ðŸŒ¶ï¸');
+                        $(this).text('Stay spicy 🌶️');
                         $(this).fadeIn('fast');
                     });
                 }
