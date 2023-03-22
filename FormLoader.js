@@ -264,7 +264,7 @@ class FormLoader
                 {
                     return $('.js-fm-an-big[data-type="2"]').attr('data-type', '3').fadeOut('fast', function()
                     {
-                        $(this).text('Pulling up your Chili Expert's calendar');
+                        $(this).text('Pulling up your Chili Experts calendar');
                         $(this).fadeIn('fast');
                     });
                 }
