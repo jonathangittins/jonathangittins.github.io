@@ -1,6 +1,6 @@
 class FormLoader
 {
-    pages = [/jonathan-plain-html-form-loading-state'];
+    pages = ['/jonathan-plain-html-form-loading-state'];
     find   = {interval: null, tries: 0, name: null, company: null};
     popup = {target: null, class: '.chilipiper-popup', ready: false, interval: null, tries: 0};
 
