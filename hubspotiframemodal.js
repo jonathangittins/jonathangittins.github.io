@@ -3,11 +3,9 @@ class FormLoader
     pages = ['/b3b/jonathan-plain-html-form-loading-state/'];
     find   = {interval: null, tries: 0, name: null, company: null};
     popup = {target: null, class: '.chilipiper-popup', ready: false, interval: null, tries: 0};
-
     constructor()
     {
         let enabled = false;
-
         $.each(this.pages, function(index, page)
         {
             if(window.location.pathname.startsWith(page))
@@ -16,17 +14,14 @@ class FormLoader
                 return false;
             }
         });
-
         if(!enabled)
         {
             return;
         }
-
         this.initHubspotEvent();
         this.prepareListener();
         this.prepareStyle();
     }
-
     sanitize(string)
     {
         return string.replace(/[^\w. ]/gi, function (c)
@@ -34,7 +29,6 @@ class FormLoader
             return '&#' + c.charCodeAt(0) + ';';
         });
     }
-
     prepareStyle()
     {
         $('head').append(`
@@ -49,7 +43,6 @@ class FormLoader
                     top: 0;
                     left: 0;
                 }
-                
                 .form-animation .fm-an-box 
                 {
                     max-width: 560px;
@@ -70,7 +63,6 @@ class FormLoader
                     max-height: 100vh;
                     overflow: auto;
                 }
-                
                 .form-animation .fm-an-loader
                 {
                     border: 10px solid #F7F9FA;
@@ -80,17 +72,14 @@ class FormLoader
                     margin: 0 auto;
                     padding: 10px;
                 }
-                
                 .form-animation .fm-an-loader > div
                 {
                     overflow: hidden;
                 }
-                
                 .form-animation .fm-an-loader > div > img
                 {
                     transform: scale(1.004);
                 }
-                
                 .form-animation .js-fm-an-small
                 {
                     font-family: 'Bayon';
@@ -104,7 +93,6 @@ class FormLoader
                     margin-bottom: 16px;
                     margin-top: 50px;
                 }
-                
                 .form-animation .js-fm-an-big
                 {
                     font-style: normal;
@@ -117,21 +105,18 @@ class FormLoader
                     color: #252C47;
                     min-height: 90px;
                 }
-                
                 @media screen and (max-width: 992px) 
                 {
                     .form-animation .fm-an-box 
                     {
                         padding: 60px 30px;
                     }
-                    
                     .form-animation .js-fm-an-small
                     {
                         font-size: 16px;
                         margin-bottom: 8px;
                         margin-top: 25px;
                     }
-                    
                     .form-animation .js-fm-an-big
                     {
                         font-size: 30px;
@@ -141,15 +126,14 @@ class FormLoader
             </style>
         `);
     }
-
-    initHubspotEvent() {
+    initHubspotEvent() 
+    {
     window.addEventListener("message", (event) => {
         if (event.data.type === "hsFormCallback" && event.data.eventName === "onFormSubmitted") 
     {
         // Get a reference to the iframe and its content
             let iframe = document.getElementById('hs-form-iframe-0');
             let iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
             // Find the input elements within the iframe
             let firstNameInput = iframeDocument.querySelector('input[name="firstname"]');
             let companyInput = iframeDocument.querySelector('input[name="company"]');
@@ -159,52 +143,40 @@ class FormLoader
             this.popup.target = null;
             this.popup.ready = false;
             this.popup.tries = 0;
-
             clearInterval(this.find.interval);
             clearInterval(this.popup.interval);
-
             this.popup.interval = null;
             this.find.interval = null;
-
             this.find.interval = setInterval(() =>
             {
                 this.find.tries++;
-
                 /* Handle Tries */
                 if(this.find.tries > 20)
                 {
                     clearInterval(this.find.interval);
-
                     this.find.interval = null;
                     this.find.tries = 0;
-
                     console.log('Animation Loader: Failed to find ChiliPiper popup.');
-
                     return false;
                 }
-
                 /* Get Popup */
                 this.popup.target = $(this.popup.class); if(!this.popup.target.length) { return true; }
-
                 /* Name & Company */
                 this.find.name = firstNameInput.value;
                 this.find.company = companyInput.value;
-
                 /* Start Animation */
                 this.animationStart();
-
                 /* Clear Interval */
                 clearInterval(this.find.interval);
-
                 /* Reset Find */
                 this.find.interval = null;
                 this.find.tries = 0;
-
                 console.log('Animation Loader: ChiliPiper popup found.');
             }, 100);
         });
     };
-
+});
+};
     prepareListener()
     {
         window.addEventListener('message', (event) =>
@@ -215,18 +187,14 @@ class FormLoader
             }
         }, false);
     };
-
     animationStart()
     {
         /* Hide */
         this.popup.target.css('opacity', 0);
-
         /* Blur */
         let blur = $('.js-animation-blur');
         if(!blur.length) { console.log('Consider setting class ".js-animation-blur" on a div for blur effect.'); }
-
         blur.css('filter', 'blur(5px)');
-
         /* Append Loader */
         this.popup.target.after(`
             <div class="form-animation">
@@ -236,24 +204,19 @@ class FormLoader
                             <img src="https://global.divhunt.com/clients/chilipiper/bookademo.gif" alt="Book a Demo">
                         </div>
                     </div>
-                    
                     <p class="js-fm-an-small">Almost ready to book....</p>
                     <p class="js-fm-an-big"  data-type="start">Hi ${this.sanitize(this.find.name)} 👋</p>
                 </div>
             </div>
         `);
-
         /* Fade In */
         $('.form-animation > .fm-an-box').fadeIn('slow');
-
         this.popup.interval = setInterval(() =>
         {
             /* Tries */
             this.popup.tries++;
-
             /* Data */
             let company = this.find.company;
-
             /* Handle Ready */
             if(!this.popup.ready || this.popup.tries < 20)
             {
@@ -286,27 +249,20 @@ class FormLoader
                     });
                 }
             }
-
             clearInterval(this.popup.interval);
-
             this.popup.interval = null;
             this.popup.tries = 0;
-
             console.log('Animation Loader: ChiliPiper popup is ready.');
-
             /* Show Popup */
             this.popup.target.css('opacity', 1);
-
             /* Remove Animation */
             $('.form-animation').fadeOut('medium', function()
             {
                 $(this).remove();
             });
-
             /* Blur */
             blur.css('filter', '');
         }, 500);
     };
 }
-
 new FormLoader();
